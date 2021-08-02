@@ -1,20 +1,16 @@
-import { Route, Switch } from "react-router-dom";
+import { useState } from 'react';
 
-import "./App.css";
-import Home from "./components/Home";
-import Librarian from "./components/Librarian";
+import PrivateRoutes from './components/config/PrivateRoutes';
+import localStorageService from './components/services/localStorageService';
 
 function App() {
-  return (
-    <Switch>
-      <Route exact path="/">
-        <Home />
-      </Route>
-      <Route path="/librarian">
-        <Librarian />
-      </Route>
-    </Switch>
-  );
+	const [role, setRole] = useState(localStorageService.getRole());
+
+	return (
+		<>
+			<PrivateRoutes role={role} setRole={setRole} />
+		</>
+	);
 }
 
 export default App;
