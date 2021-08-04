@@ -1,11 +1,14 @@
 const jwt = require('jsonwebtoken');
 
 const db = require('../models');
+const { Sequelize } = require('../models');
+
+const Op = Sequelize.Op;
 
 const librarianLoginController = async (req, res) => {
 	const { username, password } = req.body;
 	const targetUser = await db.Librarian.findOne({
-		where: { username: username },
+		where: { username },
 	});
 
 	if (!targetUser) {
@@ -21,7 +24,7 @@ const librarianLoginController = async (req, res) => {
 			const token = jwt.sign(payload, 'myl1br@ry', { expiresIn: '12h' });
 
 			res.status(200).send({
-				token: token,
+				token,
 				user: targetUser.username,
 				message: `Welcome ${targetUser.username}, Login successful`,
 			});
@@ -31,4 +34,19 @@ const librarianLoginController = async (req, res) => {
 	}
 };
 
-module.exports = librarianLoginController;
+const getStudentDataController = async (req, res) => {
+	const { studentId } = req.body;
+	let getStudentData;
+
+	if (!studentId) {
+		getStudentData = null;
+	} else {
+		getStudentData = await db.Owns.findAll({
+			where: { student_id: { [Op.substring]: studentId } },
+		});
+	}
+
+	res.status(200).send({ studentData: getStudentData });
+};
+
+module.exports = { librarianLoginController, getStudentDataController };

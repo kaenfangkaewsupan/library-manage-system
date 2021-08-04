@@ -42,10 +42,6 @@ export default function LibrarianStudentData() {
 			dataIndex: 'studentId',
 		},
 		{
-			title: 'จำนวนครั้งที่เข้าห้องสุมด',
-			dataIndex: 'numberOfAccessLibrary',
-		},
-		{
 			title: 'จำนวนครั้งที่ยืมหนังสือ',
 			dataIndex: 'numberOfBorrowingBooks',
 		},
@@ -75,32 +71,33 @@ export default function LibrarianStudentData() {
 	return (
 		<>
 			<Row justify="space-between" align="middle">
-				<Col xs={4} md={3} xl={3}>
+				<Col xs={24} md={24} xl={3}>
 					<Row justify="center">
-						<Image src={Logo} alt="logo" width={150} />
+						<Image src={Logo} alt="logo" />
 					</Row>
 				</Col>
-				<Col xs={12} md={11} xl={12}>
+				<Col xs={22} md={20} xl={12} style={{ margin: '0 auto' }}>
 					<Input
 						onPressEnter={onSearch}
-						enterButton
 						allowClear
-						maxLength={100}
+						maxLength={10}
 						placeholder="ใส่รหัสประจำตัวนักเรียนเพื่อค้นหาข้อมูลนักเรียน Ex.51506 (หากใส่ไม่ครบระบบจะค้นหาข้อมูลที่ใกล้เคียง)"
 					/>
 				</Col>
-				<Col>
-					<Menu mode="horizontal">
-						{menuData.map(data => (
-							<Tooltip title={data.title}>
-								<Link to={data.path}>
-									<Menu.Item key={data.key} icon={data.icon}>
-										{data.title}
-									</Menu.Item>
-								</Link>
-							</Tooltip>
-						))}
-					</Menu>
+				<Col xs={22} md={20} xl={7}>
+					<Row justify="center">
+						<Menu mode="horizontal">
+							{menuData.map(data => (
+								<Tooltip title={data.title}>
+									<Link to={data.path}>
+										<Menu.Item key={data.key} icon={data.icon}>
+											{data.title}
+										</Menu.Item>
+									</Link>
+								</Tooltip>
+							))}
+						</Menu>
+					</Row>
 				</Col>
 			</Row>
 			<Divider />

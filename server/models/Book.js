@@ -8,12 +8,13 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			name: {
 				type: DataTypes.STRING(100),
+				unique: true,
 			},
 			typeOfBook: {
 				type: DataTypes.STRING(50),
 			},
 			status: {
-				type: DataTypes.STRING(50),
+				type: DataTypes.STRING(10),
 			},
 		},
 		{

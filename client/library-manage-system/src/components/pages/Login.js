@@ -1,6 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Image, Form, Button, Card, Input, notification, Layout } from 'antd';
+import {
+	Image,
+	Form,
+	Button,
+	Card,
+	Input,
+	Table,
+	notification,
+	Row,
+	Col,
+} from 'antd';
 
 import '../../App.css';
 import Logo from '../../picture/logo.png';
@@ -8,6 +18,18 @@ import axios from '../config/axios';
 import localStorageService from '../services/localStorageService';
 
 export default function Login(props) {
+	const [data, setData] = useState(null);
+
+	const onSearch = e => {
+		const body = {
+			studentId: e.target.value,
+		};
+
+		axios.post('/login/get/student-data', body).then(result => {
+			setData(result.data.studentData);
+		});
+	};
+
 	const formLayout = {
 		labelCol: { offset: 2 },
 		wrapperCol: { offset: 2, span: 20 },
@@ -35,34 +57,37 @@ export default function Login(props) {
 			});
 	};
 
-	const { Header, Content } = Layout;
+	const columns = [
+		{
+			title: 'รหัสนักเรียน',
+			dataIndex: 'student_id',
+		},
+		{
+			title: 'ชื่อหนังสือ',
+			dataIndex: 'book_id',
+		},
+		{
+			title: 'วันที่ยืม',
+			dataIndex: 'borrowedDate',
+		},
+	];
+
+	const responsiveLayout = {
+		xs: 22,
+		md: 18,
+		xl: 9,
+	};
 
 	return (
 		<>
-			<Layout>
-				<Header
-					style={{
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						height: '170px',
-					}}
-				>
-					<Image src={Logo} style={{ width: '100%' }} />
-				</Header>
-				<Content
-					className="content"
-					style={{
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						height: '500px',
-					}}
-				>
+			<Row justify="center" style={{ backgroundColor: '#001529' }}>
+				<Image src={Logo} width={300} />
+			</Row>
+			<Row justify="space-around" style={{ marginTop: '1.875rem' }}>
+				<Col {...responsiveLayout}>
 					<Card
 						title="Librarian Login"
 						style={{
-							width: 450,
 							textAlign: 'center',
 							borderRadius: '1.25rem',
 							overflow: 'hidden',
@@ -86,7 +111,7 @@ export default function Login(props) {
 									{ required: true, message: 'กรุณากรอกชื่อผู้ใช้ของคุณ!' },
 								]}
 							>
-								<Input placeholder="John Doe" allowClear maxLength={50} />
+								<Input placeholder="John Doe" allowClear maxLength={100} />
 							</Form.Item>
 
 							<Form.Item
@@ -118,8 +143,17 @@ export default function Login(props) {
 							</Form.Item>
 						</Form>
 					</Card>
-				</Content>
-			</Layout>
+				</Col>
+				<Col {...responsiveLayout}>
+					<Input
+						onPressEnter={onSearch}
+						allowClear
+						maxLength={10}
+						placeholder="ใส่รหัสประจำตัวนักเรียนเพื่อค้นหาข้อมูลนักเรียน Ex.51506 (หากใส่ไม่ครบระบบจะค้นหาข้อมูลที่ใกล้เคียง)"
+					/>
+					<Table dataSource={data} columns={columns} />
+				</Col>
+			</Row>
 		</>
 	);
 }

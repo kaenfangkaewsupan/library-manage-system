@@ -3,11 +3,11 @@ module.exports = (sequelize, DataTypes) => {
 		'Librarian',
 		{
 			username: {
-				type: DataTypes.STRING(50),
+				type: DataTypes.STRING(100),
 				unique: true,
 			},
 			password: {
-				type: DataTypes.STRING(50),
+				type: DataTypes.STRING(100),
 			},
 		},
 		{

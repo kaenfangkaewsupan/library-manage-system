@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/login', loginRoute);
 app.use('/librarian', librarianRoute);
 
-db.sequelize.sync({ force: false }).then(() => {
+db.sequelize.sync({ force: true }).then(() => {
 	app.listen(port, () =>
 		console.log(`Database is sync, Server is running at port ${port}`)
 	);
